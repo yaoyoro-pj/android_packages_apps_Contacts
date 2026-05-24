@@ -30,8 +30,6 @@ import android.text.TextUtils;
 import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.preference.ContactsPreferences;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import java.util.List;
 
 /** Utility methods for the "account changed" notification in the new contact creation flow. */
@@ -76,23 +74,32 @@ public class ContactEditorUtils {
         return contactLookupUri;
     }
 
-    @VisibleForTesting
     void cleanupForTest() {
         mContactsPrefs.clearDefaultAccount();
     }
 
-    @VisibleForTesting
     void removeDefaultAccountForTest() {
         mContactsPrefs.clearDefaultAccount();
     }
 
-    @VisibleForTesting
-    void setDefaultAccountForTest(AccountWithDataSet account) {
-        mContactsPrefs.setDefaultAccountForTest(account);
+    /**
+     * Saves the default account, which can later be obtained with {@link #getOnlyOrDefaultAccount}.
+     *
+     * <p>This should be called when saving a newly created contact.
+     *
+     * @param defaultAccount the account used to save a newly created contact.
+     */
+    public void saveDefaultAccount(AccountWithDataSet defaultAccount) {
+        if (defaultAccount == null) {
+            mContactsPrefs.clearDefaultAccount();
+        } else {
+            mContactsPrefs.setDefaultAccount(defaultAccount);
+        }
     }
 
     /**
-     * @return the first account if there is only a single account or the default account.
+     * @return the first account if there is only a single account or the default account saved with
+     *     {@link #saveDefaultAccount}.
      *     <p>A null return value indicates that there is multiple accounts and a default hasn't
      *     been set
      *     <p>Also note that the returned account may have been removed already.
@@ -108,6 +115,17 @@ public class ContactEditorUtils {
 
     public boolean shouldShowAccountChangedNotification(List<AccountWithDataSet> writableAccounts) {
         return mContactsPrefs.shouldShowAccountChangedNotification(writableAccounts);
+    }
+
+    /** Sets the only non-device account to be default if it is not already. */
+    public void maybeUpdateDefaultAccount(List<AccountWithDataSet> currentWritableAccounts) {
+        if (currentWritableAccounts.size() == 1) {
+            final AccountWithDataSet onlyAccount = currentWritableAccounts.get(0);
+            if (!onlyAccount.equals(AccountWithDataSet.getLocalAccount(mContext))
+                    && !onlyAccount.equals(mContactsPrefs.getDefaultAccount())) {
+                mContactsPrefs.setDefaultAccount(onlyAccount);
+            }
+        }
     }
 
     /**

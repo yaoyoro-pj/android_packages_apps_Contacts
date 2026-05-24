@@ -20,7 +20,6 @@ import android.accounts.AccountManager;
 import android.content.Context;
 
 import com.android.contacts.model.account.AccountWithDataSet;
-import com.android.contacts.preference.ContactsPreferences;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,14 +37,10 @@ public final class DeviceLocalAccountLocator {
 
     /** Returns a list of device local accounts */
     public List<AccountWithDataSet> getDeviceLocalAccounts() {
-        if (!mLocalAccount.get(0).hasData(mContext) && !isDeviceLocalDefaultAccount()) {
+        if (!mLocalAccount.get(0).hasData(mContext)) {
             return Collections.emptyList();
         } else {
             return mLocalAccount;
         }
-    }
-
-    private boolean isDeviceLocalDefaultAccount() {
-        return new ContactsPreferences(mContext).isDeviceLocalDefault();
     }
 }

@@ -15,13 +15,11 @@
  */
 package com.android.contacts.tests;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.provider.ContactsContract.RawContacts.DefaultAccount.DefaultAccountAndState;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -72,13 +70,8 @@ public class AdbHelpers {
             return;
         }
 
-        AccountWithDataSet localDeviceAccount = AccountWithDataSet.getLocalAccount(context);
-        DefaultAccountAndState defaultAccountAndState =
-                name.equals(localDeviceAccount.name) && type.equals(localDeviceAccount.type)
-                        ? DefaultAccountAndState.ofLocal()
-                        : DefaultAccountAndState.ofCloud(new Account(name, type));
-
-        new ContactsPreferences(context).setDefaultAccountAndState(defaultAccountAndState);
+        new ContactsPreferences(context)
+                .setDefaultAccount(new AccountWithDataSet(name, type, null));
     }
 
     public static void clearDefaultAccount(Context context) {

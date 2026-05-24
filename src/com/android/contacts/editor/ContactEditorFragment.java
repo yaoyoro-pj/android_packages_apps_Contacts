@@ -42,7 +42,6 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.Intents;
 import android.provider.ContactsContract.RawContacts;
-import android.provider.ContactsContract.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +62,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.android.contacts.ContactSaveService;
 import com.android.contacts.GroupMetaDataLoader;
 import com.android.contacts.R;
+import com.android.contacts.activities.ContactEditorAccountsChangedActivity;
 import com.android.contacts.activities.ContactEditorActivity;
 import com.android.contacts.activities.ContactEditorActivity.ContactEditor;
 import com.android.contacts.activities.ContactSelectionActivity;
@@ -584,8 +584,7 @@ public class ContactEditorFragment extends Fragment
         }
 
         if (mHasNewContact) {
-            AccountsLoader.loadAccounts(
-                    this, LOADER_ACCOUNTS, AccountTypeManager.insertableFilter(getContext()));
+            AccountsLoader.loadAccounts(this, LOADER_ACCOUNTS, AccountTypeManager.writableFilter());
         }
     }
 
@@ -700,16 +699,18 @@ public class ContactEditorFragment extends Fragment
                 }
             case REQUEST_CODE_ACCOUNTS_CHANGED:
                 {
-                    AccountWithDataSet defaultAccount =
-                            new ContactsPreferences(mContext).getDefaultAccount();
                     // Bail if the account selector was not successful.
-                    if (defaultAccount == null) {
+                    if (resultCode != Activity.RESULT_OK
+                            || data == null
+                            || !data.hasExtra(Intents.Insert.EXTRA_ACCOUNT)) {
                         if (mListener != null) {
                             mListener.onReverted();
                         }
                         return;
                     }
-                    createContact(defaultAccount);
+                    AccountWithDataSet account =
+                            data.getParcelableExtra(Intents.Insert.EXTRA_ACCOUNT);
+                    createContact(account);
                     break;
                 }
         }
@@ -1071,12 +1072,15 @@ public class ContactEditorFragment extends Fragment
         // If there is no default account or the accounts have changed such that we need to
         // prompt the user again, then launch the account prompt.
         if (mEditorUtils.shouldShowAccountChangedNotification(accounts)) {
-            Intent intent = new Intent(Settings.ACTION_SET_DEFAULT_ACCOUNT);
+            Intent intent = new Intent(mContext, ContactEditorAccountsChangedActivity.class);
             // Prevent a second instance from being started on rotates
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             mStatus = Status.SUB_ACTIVITY;
             startActivityForResult(intent, REQUEST_CODE_ACCOUNTS_CHANGED);
         } else {
+            // Make sure the default account is automatically set if there is only one non-device
+            // account.
+            mEditorUtils.maybeUpdateDefaultAccount(accounts);
             // Otherwise, there should be a default account. Then either create a local contact
             // (if default account is null) or create a contact with the specified account.
             AccountWithDataSet defaultAccount = mEditorUtils.getOnlyOrDefaultAccount(accounts);

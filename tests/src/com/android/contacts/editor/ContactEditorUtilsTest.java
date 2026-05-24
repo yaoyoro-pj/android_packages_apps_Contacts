@@ -16,7 +16,9 @@
 
 package com.android.contacts.editor;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
 
 import static org.junit.Assert.assertTrue;
 
@@ -70,6 +72,21 @@ public class ContactEditorUtilsTest {
     }
 
     /**
+     * Test for - {@link ContactEditorUtils#saveDefaultAccount} - {@link
+     * ContactEditorUtils#getOnlyOrDefaultAccount}
+     */
+    @Test
+    public void testSaveDefaultAccount() {
+        mTarget.saveDefaultAccount(null);
+        assertNull(mTarget.getOnlyOrDefaultAccount(Collections.<AccountWithDataSet>emptyList()));
+
+        mTarget.saveDefaultAccount(ACCOUNT_1_A);
+        assertEquals(
+                ACCOUNT_1_A,
+                mTarget.getOnlyOrDefaultAccount(Collections.<AccountWithDataSet>emptyList()));
+    }
+
+    /**
      * Tests for {@link
      * ContactEditorUtils#shouldShowAccountChangedNotification(List<AccountWithDataSet>)}, starting
      * with 0 accounts.
@@ -85,7 +102,7 @@ public class ContactEditorUtilsTest {
         // Now we open the contact editor with the new account.
 
         // When closing the editor, we save the default account.
-        setDefaultAccountForTest(ACCOUNT_1_A);
+        mTarget.saveDefaultAccount(ACCOUNT_1_A);
 
         // Next time the user creates a contact, we don't show the notification.
         assertFalse(mTarget.shouldShowAccountChangedNotification(currentAccounts));
@@ -97,7 +114,7 @@ public class ContactEditorUtilsTest {
         assertFalse(mTarget.shouldShowAccountChangedNotification(currentAccounts));
 
         // User saved a new contact.  We update the account list and the default account.
-        setDefaultAccountForTest(ACCOUNT_1_B);
+        mTarget.saveDefaultAccount(ACCOUNT_1_B);
 
         // User created another contact.  Now we don't show the notification.
         assertFalse(mTarget.shouldShowAccountChangedNotification(currentAccounts));
@@ -112,7 +129,7 @@ public class ContactEditorUtilsTest {
         assertFalse(mTarget.shouldShowAccountChangedNotification(currentAccounts));
 
         // User saves a new contact, with a different default account.
-        setDefaultAccountForTest(ACCOUNT_2_A);
+        mTarget.saveDefaultAccount(ACCOUNT_2_A);
 
         // Next time user creates a contact, no notification.
         assertFalse(mTarget.shouldShowAccountChangedNotification(currentAccounts));
@@ -149,7 +166,7 @@ public class ContactEditorUtilsTest {
                         Collections.singletonList(ACCOUNT_1_A)));
 
         // User saves a new contact.
-        setDefaultAccountForTest(ACCOUNT_1_A);
+        mTarget.saveDefaultAccount(ACCOUNT_1_A);
 
         // Next time, no notification.
         assertFalse(
@@ -172,7 +189,7 @@ public class ContactEditorUtilsTest {
                         Collections.<AccountWithDataSet>emptyList()));
 
         // We show the notification here, and user clicked "keep local" and saved an contact.
-        setDefaultAccountForTest(AccountWithDataSet.getNullAccount());
+        mTarget.saveDefaultAccount(AccountWithDataSet.getNullAccount());
 
         // Now there are no accounts, and default account is null.
 
@@ -185,7 +202,7 @@ public class ContactEditorUtilsTest {
     @Test
     public void testShouldShowAccountChangedNotification_initial_check() {
         // Prepare 1 account and save it as the default.
-        setDefaultAccountForTest(ACCOUNT_1_A);
+        mTarget.saveDefaultAccount(ACCOUNT_1_A);
 
         // Right after a save, the dialog shouldn't show up.
         assertFalse(
@@ -211,14 +228,10 @@ public class ContactEditorUtilsTest {
         assertTrue(mTarget.shouldShowAccountChangedNotification(currentAccounts));
 
         // User chooses to keep the "device" account as the default
-        setDefaultAccountForTest(nullAccount);
+        mTarget.saveDefaultAccount(nullAccount);
 
         // Right after a save, the dialog shouldn't show up.
         assertFalse(mTarget.shouldShowAccountChangedNotification(currentAccounts));
-    }
-
-    private void setDefaultAccountForTest(AccountWithDataSet account) {
-        mTarget.setDefaultAccountForTest(account);
     }
 
     private static class MockAccountType extends AccountType {

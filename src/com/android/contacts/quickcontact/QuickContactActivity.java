@@ -106,8 +106,6 @@ import com.android.contacts.ContactSaveService;
 import com.android.contacts.ContactsActivity;
 import com.android.contacts.ContactsUtils;
 import com.android.contacts.DynamicShortcuts;
-import com.android.contacts.MoreContactUtils;
-import com.android.contacts.MoreContactUtils.EdgeToEdgeInsetHandler;
 import com.android.contacts.R;
 import com.android.contacts.ShortcutIntentBuilder;
 import com.android.contacts.ShortcutIntentBuilder.OnShortcutIntentCreatedListener;
@@ -768,8 +766,6 @@ public class QuickContactActivity extends ContactsActivity {
         ViewUtil.addRectangularOutlineProvider(findViewById(R.id.toolbar_parent), getResources());
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        MoreContactUtils.setupEdgeToEdge(
-                this, new EdgeToEdgeInsetHandler(findViewById(R.id.toolbar_parent)));
         setActionBar(toolbar);
         getActionBar().setTitle(null);
         // Put a TextView with a known resource id into the ActionBar. This allows us to easily

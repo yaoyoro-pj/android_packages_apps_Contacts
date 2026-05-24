@@ -26,6 +26,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
@@ -48,6 +49,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.filters.SdkSuppress;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.Until;
@@ -88,6 +90,8 @@ import java.util.concurrent.TimeUnit;
 // @Suppress
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+@SdkSuppress(minSdkVersion = Build.VERSION_CODES.M)
+@TargetApi(Build.VERSION_CODES.M)
 public class SimImportActivityTest {
 
     public static final int TIMEOUT = 100000;

@@ -30,7 +30,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import com.android.contacts.MoreContactUtils;
 import com.android.contacts.R;
 import com.android.contacts.model.AccountTypeManager;
 
@@ -61,7 +60,6 @@ public class AccountFilterActivity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.contact_list_filter);
-        MoreContactUtils.setupEdgeToEdge(this, null);
 
         mListView = (ListView) findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);

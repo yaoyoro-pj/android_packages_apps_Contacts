@@ -32,7 +32,7 @@ android_app {
     static_libs: [
         "com.android.phone.common-lib",
 
-        "com.google.android.material_material",
+        "com.google.android.material_material_md3",
         "androidx.transition_transition",
         "androidx.legacy_legacy-support-v13",
         "androidx.appcompat_appcompat",

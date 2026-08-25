@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2026 Yaoyoro Project
+     SPDX-FileCopyrightText: 2022 The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-  <path
-      android:pathData="M61.34,40.62C61.41,40.62 61.48,40.62 61.54,40.62C62.57,40.62 63.43,41.46 63.23,42.47C63.11,43.1 62.92,43.71 62.68,44.3C62.19,45.46 61.48,46.52 60.59,47.42C59.69,48.31 58.63,49.02 57.46,49.5C56.29,49.98 55.03,50.23 53.77,50.23C52.5,50.23 51.24,49.98 50.07,49.5C48.9,49.02 47.84,48.31 46.95,47.42C46.05,46.52 45.34,45.46 44.85,44.3C44.61,43.71 44.42,43.1 44.3,42.47C44.1,41.46 44.96,40.62 45.99,40.62C46.05,40.62 46.12,40.62 46.19,40.62C47.22,40.62 48.03,41.47 48.36,42.45C48.4,42.57 48.44,42.68 48.49,42.79C48.78,43.48 49.2,44.11 49.73,44.64C50.26,45.17 50.89,45.59 51.58,45.87C52.27,46.16 53.02,46.31 53.77,46.31C54.52,46.31 55.26,46.16 55.95,45.87C56.64,45.59 57.27,45.17 57.8,44.64C58.33,44.11 58.75,43.48 59.04,42.79C59.09,42.68 59.13,42.57 59.17,42.45C59.5,41.47 60.31,40.62 61.34,40.62Z"
-      android:fillColor="#FFFFFF"
-      android:fillAlpha="0.749"
-      android:fillType="evenOdd"/>
-  <path
-      android:pathData="M38.31,76.5L69.69,76.5C72.98,76.5 75.72,73.79 74.83,70.64C74.6,69.82 74.32,69.03 74,68.24C72.91,65.63 71.31,63.25 69.3,61.24C67.29,59.24 64.91,57.65 62.28,56.57C59.66,55.48 56.84,54.92 54,54.92C51.16,54.92 48.34,55.48 45.72,56.57C43.09,57.65 40.71,59.24 38.7,61.24C36.69,63.25 35.09,65.63 34,68.24C33.68,69.03 33.4,69.82 33.17,70.64C32.28,73.79 35.02,76.5 38.31,76.5L38.31,76.5Z"
-      android:fillColor="#FFFFFF"
-      android:fillType="evenOdd"/>
+  <group>
+    <clip-path
+        android:pathData="M0,0h108v108h-108z"/>
+    <path
+        android:pathData="M64,64C64,72.837 57,76 48,76C39,76 32,72.837 32,64C32,51.163 39,44 48,44C57,44 64,51.163 64,64Z"
+        android:fillColor="#193057"/>
+    <path
+        android:pathData="M58,62C55.569,63.255 51.821,64 48,64C44.179,64 40.431,63.255 38,62C39.093,65.47 41.333,70 48,70C54.667,70 56.907,65.47 58,62Z"
+        android:fillColor="#ffffff"/>
+    <path
+        android:pathData="M28.54,28.54m-72,0a72,72 0,1 1,144 0a72,72 0,1 1,-144 0"
+        android:fillAlpha="0.6">
+      <aapt:attr name="android:fillColor">
+        <gradient
+            android:gradientRadius="72"
+            android:centerX="28.54"
+            android:centerY="28.54"
+            android:type="radial">
+          <item android:offset="0" android:color="#19FFFFFF"/>
+          <item android:offset="1" android:color="#00FFFFFF"/>
+        </gradient>
+      </aapt:attr>
+    </path>
+  </group>
 </vector>
